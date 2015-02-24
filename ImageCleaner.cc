@@ -8,7 +8,7 @@
 void cpu_fftx(float *real_image, float *imag_image, int size_x, int size_y)
 {
   // Create some space for storing temporary values
-  float *realOutBuffer = new float[size_x];
+  float *realOutBuffer = new float[size_x]; // Why on the heap?? keep it on the stack...
   float *imagOutBuffer = new float[size_x];
   // Local values
   float *fft_real = new float[size_y];
@@ -30,7 +30,8 @@ void cpu_fftx(float *real_image, float *imag_image, int size_x, int size_y)
       realOutBuffer[y] = 0.0f;
       imagOutBuffer[y] = 0.0f;
       for(unsigned int n = 0; n < size_y; n++)
-      {
+      { 
+        //Redundant computation below
 	realOutBuffer[y] += (real_image[x*size_y + n] * fft_real[n]) - (imag_image[x*size_y + n] * fft_imag[n]);
 	imagOutBuffer[y] += (imag_image[x*size_y + n] * fft_real[n]) + (real_image[x*size_y + n] * fft_imag[n]);
       }
