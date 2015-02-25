@@ -19,20 +19,21 @@ void cpu_fftx(float *real_image, float *imag_image, int size_x, int size_y)
     for(unsigned int y = 0; y < size_y; y++)
     {
       
+      // Compute the value for this index
+      realOutBuffer[y] = 0.0f;
+      imagOutBuffer[y] = 0.0f;
+
       // Compute the frequencies for this index
       for(unsigned int n = 0; n < size_y; n++)
       {
 	      float term = -2 * PI * y * n / size_y;
 	      fft_real[n] = cos(term);
 	      fft_imag[n] = sin(term);
-      }
+      //}
+ 
 
-      // Compute the value for this index
-      realOutBuffer[y] = 0.0f;
-      imagOutBuffer[y] = 0.0f;
-
-      for(unsigned int n = 0; n < size_y; n++)
-      { 
+      //for(unsigned int n = 0; n < size_y; n++)
+      //{ 
         //Redundant computation below
         unsigned int offset = x*size_y + n;
 	      realOutBuffer[y] += (real_image[offset] * fft_real[n]) - (imag_image[offset] * fft_imag[n]);
@@ -66,6 +67,10 @@ void cpu_ifftx(float *real_image, float *imag_image, int size_x, int size_y)
   {
     for(unsigned int y = 0; y < size_y; y++)
     {
+
+      // Compute the value for this index
+      realOutBuffer[y] = 0.0f;
+      imagOutBuffer[y] = 0.0f;
       
       for(unsigned int n = 0; n < size_y; n++)
       {
@@ -73,14 +78,12 @@ void cpu_ifftx(float *real_image, float *imag_image, int size_x, int size_y)
 	      float term = 2 * PI * y * n / size_y;
 	      fft_real[n] = cos(term);
 	      fft_imag[n] = sin(term);
-      }
+      //}
 
-      // Compute the value for this index
-      realOutBuffer[y] = 0.0f;
-      imagOutBuffer[y] = 0.0f;
+      
 
-      for(unsigned int n = 0; n < size_y; n++)
-      {
+      //for(unsigned int n = 0; n < size_y; n++)
+      //{
         unsigned int offset = x*size_y + n;
 	      realOutBuffer[y] += (real_image[offset] * fft_real[n]) - (imag_image[offset] * fft_imag[n]);
 	      imagOutBuffer[y] += (imag_image[offset] * fft_real[n]) + (real_image[offset] * fft_imag[n]);
@@ -116,6 +119,10 @@ void cpu_ffty(float *real_image, float *imag_image, int size_x, int size_y)
   {
     for(unsigned int x = 0; x < size_x; x++)
     {
+
+      // Compute the value for this index
+      realOutBuffer[x] = 0.0f;
+      imagOutBuffer[x] = 0.0f;
       // Compute the frequencies for this index
       for(unsigned int n = 0; n < size_y; n++)
       {
@@ -124,9 +131,7 @@ void cpu_ffty(float *real_image, float *imag_image, int size_x, int size_y)
 	      fft_imag[n] = sin(term);
       }
 
-      // Compute the value for this index
-      realOutBuffer[x] = 0.0f;
-      imagOutBuffer[x] = 0.0f;
+      
       for(unsigned int n = 0; n < size_x; n++)
       {
         unsigned int offset = n*size_y + y;
@@ -161,6 +166,9 @@ void cpu_iffty(float *real_image, float *imag_image, int size_x, int size_y)
   {
     for(unsigned int x = 0; x < size_x; x++)
     {
+      // Compute the value for this index
+      realOutBuffer[x] = 0.0f;
+      imagOutBuffer[x] = 0.0f;
       // Compute the frequencies for this index
       for(unsigned int n = 0; n < size_y; n++)
       {
@@ -170,9 +178,7 @@ void cpu_iffty(float *real_image, float *imag_image, int size_x, int size_y)
 	      fft_imag[n] = sin(term);
       }
 
-      // Compute the value for this index
-      realOutBuffer[x] = 0.0f;
-      imagOutBuffer[x] = 0.0f;
+      
       for(unsigned int n = 0; n < size_x; n++)
       {
         unsigned int offset = n*size_y + y;
