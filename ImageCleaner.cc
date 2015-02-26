@@ -17,10 +17,10 @@ void cpu_fftx(float *real_image, float *imag_image, int size_x, int size_y)
 
   unsigned int x, y, n = 0;
 
-  #pragma omp parallel shared(realOutBuffer, imagOutBuffer, fft_real, fft_imag, size_y, size_x) private(x, y, n) 
+  #pragma omp parallel shared(realOutBuffer, imagOutBuffer, fft_real, fft_imag, size_y, size_x, real_image) private(x,y,n )  //y,n
   {
 
-  #pragma omp for
+  #pragma omp for 
   for(x = 0; x < size_x; x++)
   {
     for(y = 0; y < size_y; y++)
@@ -70,11 +70,11 @@ void cpu_ifftx(float *real_image, float *imag_image, int size_x, int size_y)
 
   unsigned int x, y, n = 0;
 
-  #pragma omp parallel shared(realOutBuffer, imagOutBuffer, fft_real, fft_imag, size_y, size_x) private(x, y, n)
+  #pragma omp parallel shared(realOutBuffer, imagOutBuffer, fft_real, fft_imag, size_y, size_x, real_image) private(x,y,n)
   {
 
-  #pragma omp for
-  for(x = 0; x < size_x; x++)
+  #pragma omp for  
+ for(x = 0; x < size_x; x++)
   {
     for(y = 0; y < size_y; y++)
     {
@@ -125,10 +125,10 @@ void cpu_ffty(float *real_image, float *imag_image, int size_x, int size_y)
 
   unsigned int x, y, n = 0;
 
-  #pragma omp parallel shared(realOutBuffer, imagOutBuffer, fft_real, fft_imag, size_y, size_x) private(x, y, n)
+ #pragma omp parallel shared(realOutBuffer, imagOutBuffer, fft_real, fft_imag, size_y, size_x, real_image) private(y,x,n) 
   {
 
-  #pragma omp for
+  #pragma omp for 
   for(y = 0; y < size_y; y++)
   {
     for(x = 0; x < size_x; x++)
@@ -177,10 +177,10 @@ void cpu_iffty(float *real_image, float *imag_image, int size_x, int size_y)
 
   unsigned int x, y, n = 0;
 
-  #pragma omp parallel shared(realOutBuffer, imagOutBuffer, fft_real, fft_imag, size_y, size_x) private(x, y, n)
+ #pragma omp parallel shared(realOutBuffer, imagOutBuffer, fft_real, fft_imag, size_y, size_x, real_image) private(y,x,n)
   {
 
-  #pragma omp for
+  #pragma omp for 
   for(y = 0; y < size_y; y++)
   {
     for(x = 0; x < size_x; x++)
