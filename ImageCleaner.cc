@@ -9,16 +9,16 @@
 void cpu_fftx(float *real_image, float *imag_image, int size_x, int size_y)
 {
   // Create some space for storing temporary values
-  float *realOutBuffer = new float[size_x];
-  float *imagOutBuffer = new float[size_x];
-  // Local values
-  float *fft_real = new float[size_y];
-  float *fft_imag = new float[size_y];
 
   unsigned int x, y, n = 0;
 
-  #pragma omp parallel shared(realOutBuffer, imagOutBuffer, fft_real, fft_imag, size_y, size_x, real_image) private(x,y,n )  //y,n
+  #pragma omp parallel private(x,y,n )
   {
+
+	float realOutBuffer[size_x];
+	float imagOutBuffer[size_x];	
+	float fft_real[size_y];
+	float fft_imag[size_y];
 
   #pragma omp for 
   for(x = 0; x < size_x; x++)
@@ -52,27 +52,21 @@ void cpu_fftx(float *real_image, float *imag_image, int size_x, int size_y)
 
   } /* END OF PARALLEL REGION */
 
-  // Reclaim some memory
-  delete [] realOutBuffer;
-  delete [] imagOutBuffer;
-  delete [] fft_real;
-  delete [] fft_imag;
 }
 
 // This is the same as the thing above, except it has a scaling factor added to it
 void cpu_ifftx(float *real_image, float *imag_image, int size_x, int size_y)
 {
   // Create some space for storing temporary values
-  float *realOutBuffer = new float[size_x];
-  float *imagOutBuffer = new float[size_x];
-  float *fft_real = new float[size_y];
-  float *fft_imag = new float[size_y];
 
   unsigned int x, y, n = 0;
 
-  #pragma omp parallel shared(realOutBuffer, imagOutBuffer, fft_real, fft_imag, size_y, size_x, real_image) private(x,y,n)
+  #pragma omp parallel private(x,y,n)
   {
-
+	float imagOutBuffer[size_x];
+	float realOutBuffer[size_x];
+	float fft_real[size_y];
+	float fft_imag[size_y];
   #pragma omp for  
  for(x = 0; x < size_x; x++)
   {
@@ -108,26 +102,20 @@ void cpu_ifftx(float *real_image, float *imag_image, int size_x, int size_y)
   }
 
   } /* END OF PARALLEL REGION */
-  // Reclaim some memory
-  delete [] realOutBuffer;
-  delete [] imagOutBuffer;
-  delete [] fft_real;
-  delete [] fft_imag;
 }
 
 void cpu_ffty(float *real_image, float *imag_image, int size_x, int size_y)
 {
   // Allocate some space for temporary values
-  float *realOutBuffer = new float[size_y];
-  float *imagOutBuffer = new float[size_y];
-  float *fft_real = new float[size_x];
-  float *fft_imag = new float[size_x];
 
   unsigned int x, y, n = 0;
 
- #pragma omp parallel shared(realOutBuffer, imagOutBuffer, fft_real, fft_imag, size_y, size_x, real_image) private(y,x,n) 
-  {
-
+ #pragma omp parallel private(x,y,n) 
+{
+	float realOutBuffer[size_y];
+	float imagOutBuffer[size_y];
+	float fft_real[size_x];
+	float fft_imag[size_x];
   #pragma omp for 
   for(y = 0; y < size_y; y++)
   {
@@ -159,27 +147,21 @@ void cpu_ffty(float *real_image, float *imag_image, int size_x, int size_y)
   }
 
   }/* END OF PARALLEL REGION */
-  // Reclaim some memory
-  delete [] realOutBuffer;
-  delete [] imagOutBuffer;
-  delete [] fft_real;
-  delete [] fft_imag;
 }
 
 // This is the same as the thing about it, but it includes a scaling factor
 void cpu_iffty(float *real_image, float *imag_image, int size_x, int size_y)
 {
   // Create some space for storing temporary values
-  float *realOutBuffer = new float[size_y];
-  float *imagOutBuffer = new float[size_y];
-  float *fft_real = new float[size_x];
-  float *fft_imag = new float[size_x];
 
   unsigned int x, y, n = 0;
 
- #pragma omp parallel shared(realOutBuffer, imagOutBuffer, fft_real, fft_imag, size_y, size_x, real_image) private(y,x,n)
+ #pragma omp parallel private(x,y,n)
   {
-
+	float realOutBuffer[size_y];
+	float imagOutBuffer[size_y];
+	float fft_real[size_x];
+	float fft_imag[size_x];
   #pragma omp for 
   for(y = 0; y < size_y; y++)
   {
@@ -216,11 +198,6 @@ void cpu_iffty(float *real_image, float *imag_image, int size_x, int size_y)
   }
 
   }/* END OF PARALLEL REGION */
-  // Reclaim some memory
-  delete [] realOutBuffer;
-  delete [] imagOutBuffer;
-  delete [] fft_real;
-  delete [] fft_imag;
 }
 
 void cpu_filter(float *real_image, float *imag_image, int size_x, int size_y)
